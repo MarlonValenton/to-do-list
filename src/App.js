@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import Form from "./components/Form";
+import Todo from "./components/Todo";
+import Header from "./components/Header";
+import FilterButton from "./components/FilterButton";
+import TodoList from "./components/TodoList";
+import DATA from "./components/Data";
 
-function App() {
+function App(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div className="todoapp stack-large">
+      <Header/>
+      <Form />
+      
+      <div className="filters btn-group stack-exception">
+        <FilterButton />
+        <FilterButton />
+        <FilterButton />
+      </div>
+      <TodoList tasks={DATA}/>
+      </div>
+
   );
 }
 
