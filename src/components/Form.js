@@ -3,17 +3,20 @@ import { useState } from "react";
 function Form() {
   const [name, setName] = useState("")
   const [quantity, setQuantity] = useState(1);
-  function handleSubmit (e) {
-    e.preventDefault();
-    if (!name) return;
-
-    const newTask = {name, quantity, completed:false, id: Date.now()};
-    console.log(newTask);
-  }
+  
+  // function handleSubmit (e) {
+  //   //stop reloading page
+  //   e.preventDefault();
+  //   //if name is empty, return the page
+  //   if (!name) return;
+  //   //new task
+  //   const newTask = {name, quantity, completed:false, id: Date.now()};
+  //   console.log(newTask);
+  // }
   
   
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <h2 className="label-wrapper">
         <label htmlFor="new-todo-input" className="label__lg">
           What needs to be done?

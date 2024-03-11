@@ -1,22 +1,50 @@
 import Form from "./components/Form";
-import Todo from "./components/Todo";
 import Header from "./components/Header";
 import FilterButton from "./components/FilterButton";
 import TodoList from "./components/TodoList";
-import DATA from "./components/Data";
+import { useState } from "react";
 
-function App(props) {
+function App() {
+  const task = [
+    { id: "0", name: "Eat", completed: true },
+    { id: "1", name: "Sleep", completed: false },
+    { id: "2", name: "Repeat", completed: false },
+  ]
+  const [tasks, setTasks] = useState(task); 
+  const [filteredTasks, setFilteredTasks] = useState([...task]); 
+  
+  function handleAddTask({name}){
+    // let newId = Math.max(...tasks.map((t) => t.id ), 0) + 1;
+    // setTasks([...tasks, { id: newId.toString(), name }])
+    setTasks((tasks => [...tasks, task]));
+    console.log(tasks);
+  }
+
+  function handleDeleteTask(id){
+    setTasks(tasks.filter((task)=> task.id !== id))
+  }
+
+  // function filterHandler(type){
+  //   if (type === 'All') {
+  //     setFilteredTasks(task);
+  //   } else if (type === 'Completed') {
+  //     setFilteredTasks(tasks.filter ((task) => task.completed));
+  //   } else if (type === 'Uncompleted') {  
+  //     setFilteredTasks(tasks.filter ((task) => !task.completed));
+  //   }
+  // }
+
+  
   return (
     <div className="todoapp stack-large">
       <Header/>
-      <Form />
+      <Form onAddTask = {handleAddTask} />
       
       <div className="filters btn-group stack-exception">
         <FilterButton />
-        <FilterButton />
-        <FilterButton />
       </div>
-      <TodoList tasks={DATA}/>
+      <TodoList tasks={tasks}
+      onDeleteTask = {handleDeleteTask}/>
       </div>
 
   );

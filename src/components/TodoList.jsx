@@ -1,22 +1,20 @@
+
 import Todo from "./Todo";
-function TodoList(props) {
-    const taskList = props.tasks?.map((task) => (
-        <Todo
-          id={task.id}
-          name={task.name}
-          completed={task.completed}
-          key={task.id}
-        />
-    ));
+function TodoList({tasks, onDeleteTask}) {
+
         return (
             <div className="todoapp stack-large">
-            <h2 id="list-heading">3 tasks remaining</h2>
-            <ul
-              role="list"
-              className="todo-list stack-large stack-exception"
-              aria-labelledby="list-heading">
-              {taskList}
-            </ul>
+            <h2 id="list-heading">Tasks Remaining</h2>
+            <ul className="todo-list stack-large stack-exception" aria-labelledby="list-heading">
+          {tasks.map((task) => (
+          <Todo
+          taskList={task}
+          key={task.id}
+          onDeleteTask={onDeleteTask}
+          />
+          ))}
+
+          </ul>
           </div>
         )
 };
