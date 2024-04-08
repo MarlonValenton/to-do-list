@@ -1,30 +1,27 @@
 import { useState } from "react";
 
-function Form() {
+function Form(props) {
   const [name, setName] = useState("")
-  const [quantity, setQuantity] = useState(1);
+ 
+  function handleChange(event) {
+    setName(event.target.value);
+  }
   
-  // function handleSubmit (e) {
-  //   //stop reloading page
-  //   e.preventDefault();
-  //   //if name is empty, return the page
-  //   if (!name) return;
-  //   //new task
-  //   const newTask = {name, quantity, completed:false, id: Date.now()};
-  //   console.log(newTask);
-  // }
-  
+  function handleSubmit(event) {
+    event.preventDefault();
+    props.addTask(name);
+    setName("");
+  }
+
+
   
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <h2 className="label-wrapper">
         <label htmlFor="new-todo-input" className="label__lg">
           What needs to be done?
         </label>
       </h2>
-      <select value={quantity} onChange={(e) =>setQuantity(Number(+e.target.value))}>
-        {Array.from({length:20}, (_, i) => i+1).map(num=><option value={num} key={num}>{num}</option>)}
-      </select>
       <input
         type="text"
         id="new-todo-input"
@@ -32,7 +29,7 @@ function Form() {
         name="text"
         autoComplete="off"
         value={name}
-        onChange={e=>setName(e.target.value)}
+        onChange={handleChange}
         placeholder="Type a task here..."
       />
 

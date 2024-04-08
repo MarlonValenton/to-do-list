@@ -2,52 +2,88 @@ import Form from "./components/Form";
 import Header from "./components/Header";
 import FilterButton from "./components/FilterButton";
 import TodoList from "./components/TodoList";
+import Todo from "./components/Todo";
+import taskList from "./components/TodoList"
 import { useState } from "react";
 
+
+const FILTER_MAP = {
+  All: () => true,
+  Active: (task) => !task.completed,
+  Completed: (task) => task.completed,
+};
+const FILTER_NAMES = Object.keys(FILTER_MAP);
+
+
 function App() {
-  const task = [
-    { id: "0", name: "Eat", completed: true },
-    { id: "1", name: "Sleep", completed: false },
-    { id: "2", name: "Repeat", completed: false },
-  ]
+
+  const task = []
   const [tasks, setTasks] = useState(task); 
-  const [filteredTasks, setFilteredTasks] = useState([...task]); 
-  
-  function handleAddTask({name}){
-    // let newId = Math.max(...tasks.map((t) => t.id ), 0) + 1;
-    // setTasks([...tasks, { id: newId.toString(), name }])
-    setTasks((tasks => [...tasks, task]));
-    console.log(tasks);
+  const [filter, setFilter] = useState("All");
+
+  const filterList = FILTER_NAMES.map((name) => (
+    <FilterButton
+      key={name}
+      name={name}
+      isPressed={name === filter}
+      setFilter={setFilter}
+    />
+  ));
+
+  const taskList = tasks
+  .filter(FILTER_MAP[filter])
+
+  function addTask(name) {
+    const newTask = { id: name, name, completed: false };
+    setTasks([...tasks, newTask]);
+  }
+
+  function toggleTaskCompleted(id) {
+    const updatedTasks = tasks.map((task) => {
+      if (id === task.id) {
+        return { ...task, completed: !task.completed };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+  }
+
+  function editTask(id, newName) {
+    const editedTaskList = tasks.map((task) => {
+      if (id === task.id) {
+        return { ...task, name: newName };
+      }
+      return task;
+    });
+    setTasks(editedTaskList);
   }
 
   function handleDeleteTask(id){
-    setTasks(tasks.filter((task)=> task.id !== id))
+    const remainingTasks = tasks.filter((task) => id !== task.id);
+    setTasks(remainingTasks);
   }
 
-  // function filterHandler(type){
-  //   if (type === 'All') {
-  //     setFilteredTasks(task);
-  //   } else if (type === 'Completed') {
-  //     setFilteredTasks(tasks.filter ((task) => task.completed));
-  //   } else if (type === 'Uncompleted') {  
-  //     setFilteredTasks(tasks.filter ((task) => !task.completed));
-  //   }
-  // }
+  
+
+
+  const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
+const headingText = `${taskList.length} ${tasksNoun} remaining`;
 
   
-  return (
-    <div className="todoapp stack-large">
-      <Header/>
-      <Form onAddTask = {handleAddTask} />
-      
-      <div className="filters btn-group stack-exception">
-        <FilterButton />
-      </div>
-      <TodoList tasks={tasks}
-      onDeleteTask = {handleDeleteTask}/>
-      </div>
-
-  );
+return (
+  <div className="todoapp stack-large">
+    <h1>TaskLister</h1>
+    <Form addTask={addTask} />
+    <div className="filters btn-group stack-exception">
+      {filterList}
+    </div>
+    <h2 id="list-heading">{headingText}</h2>
+    <TodoList tasks={tasks}
+      onDeleteTask = {handleDeleteTask}
+      ontoggleTaskCompleted={toggleTaskCompleted}
+      oneditTask={editTask}/>
+  </div>
+);
 }
 
 export default App;

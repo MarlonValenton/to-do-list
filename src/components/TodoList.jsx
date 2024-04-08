@@ -1,6 +1,7 @@
 
 import Todo from "./Todo";
-function TodoList({tasks, onDeleteTask}) {
+import  { useState } from 'react';
+function TodoList({tasks, onDeleteTask, ontoggleTaskCompleted, oneditTask}) {
 
         return (
             <div className="todoapp stack-large">
@@ -11,6 +12,9 @@ function TodoList({tasks, onDeleteTask}) {
           taskList={task}
           key={task.id}
           onDeleteTask={onDeleteTask}
+          completed={task.completed}
+          ontoggleTaskCompleted={ontoggleTaskCompleted}
+          oneditTask={oneditTask}
           />
           ))}
 
